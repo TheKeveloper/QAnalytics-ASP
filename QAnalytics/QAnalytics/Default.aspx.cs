@@ -18,6 +18,7 @@ namespace QAnalytics
             DBManager manager = new DBManager();
             manager.Open();
             List<Course> courses = Course.GetCoursesSimple(manager);
+            manager.Close();
 
             int startIndex = page * 25;
             int endIndex = startIndex + 25;

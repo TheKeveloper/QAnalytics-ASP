@@ -13,7 +13,7 @@ namespace QAnalytics {
 	
 	public partial class Default {
 		
-		protected System.Web.UI.HtmlControls.HtmlForm form1;
+		protected System.Web.UI.HtmlControls.HtmlForm mainForm;
 		
 		protected System.Web.UI.WebControls.DropDownList listPages;
 		

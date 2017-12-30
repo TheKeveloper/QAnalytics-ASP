@@ -7,7 +7,7 @@ namespace QAnalytics.Models
     public class DBManager
     {
         public const string DB_CONNECTION_STRING = "Database=hcourser_db; Data Source=localhost; User id=root; Password=KevinRox";
-        public const string TABLE_NAME = "Courses";
+        public const string TABLE_NAME = "courses";
 
         public MySqlConnection connection{
             get;

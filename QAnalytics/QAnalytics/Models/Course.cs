@@ -40,8 +40,7 @@ namespace QAnalytics.Models
             MySqlCommand cmd = manager.CreateCommand();
 
             this.Code = code;
-            cmd.CommandText = "SELECT * FROM @table WHERE code = @code";
-            cmd.Parameters.AddWithValue("@table", DBManager.TABLE_NAME);
+            cmd.CommandText = "SELECT * FROM courses WHERE code = @code;";
             cmd.Parameters.AddWithValue("@code", code);
 
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -56,14 +55,20 @@ namespace QAnalytics.Models
                                             reader.GetFloat("workload")));
                 }
             }
+
+            Infos.Sort((Info a, Info b) => {
+                if(a.Year != b.Year){
+                    return a.Year - b.Year;
+                }
+                return b.Semester - a.Semester;
+            });
         }
 
         public static List<Course> GetCoursesSimple(DBManager manager, int minSems = 2){
             List<Course> courses = new List<Course>();
             MySqlCommand cmd = manager.CreateCommand();
 
-            cmd.CommandText = "SELECT code, name, count(code) as c FROM courses GROUP BY code, name HAVING c >= @minsems ORDER BY code ASC";
-            cmd.Parameters.AddWithValue("@table", DBManager.TABLE_NAME);
+            cmd.CommandText = "SELECT code, name, count(code) as c FROM courses GROUP BY code, name HAVING c >= @minsems ORDER BY code ASC;";
             cmd.Parameters.AddWithValue("@minsems", minSems);
 
 

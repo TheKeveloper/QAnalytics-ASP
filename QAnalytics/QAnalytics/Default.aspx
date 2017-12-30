@@ -13,7 +13,7 @@
 </head>
 <body>
     <h1 align="center">Q-Analytics</h1>
-	<form id="form1" runat="server">
+	<form id="mainForm" runat="server">
             <asp:DropDownList id = "listPages" onchange = "listPages_SelectionChanged();" runat="server"></asp:DropDownList>
 
             <asp:Table id = "tblCourses" runat="server"></asp:Table>
