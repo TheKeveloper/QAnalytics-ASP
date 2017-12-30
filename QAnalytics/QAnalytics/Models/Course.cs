@@ -48,12 +48,24 @@ namespace QAnalytics.Models
             while(reader.Read()){
                 if(n == 0){
                     this.Name = reader.GetString("name");
-                    this.Infos.Add(new Info((Semester)reader.GetInt32("semester"),
-                                            reader.GetInt32("year"),
-                                            reader.GetInt32("enrollment"),
-                                            reader.GetFloat("recommend"),
-                                            reader.GetFloat("workload")));
+                    n++;
                 }
+                float workload = reader.GetFloat("workload");
+                Semester semester = (Semester)reader.GetInt32("semester");
+                int year = reader.GetInt32("year");
+
+                //Adjust the workload 
+                if(year > 2014 || (year == 2014 && semester == Semester.Fall)){
+                    workload = workload * 3.0f / 14.0f;
+                    if (workload < 1) workload = 1;
+                    else if (workload > 5) workload = 5;
+                    workload = (float)Math.Round((double)workload, 2);
+                }
+                this.Infos.Add(new Info(semester,
+                                        year,
+                                        reader.GetInt32("enrollment"),
+                                        reader.GetFloat("recommend"),
+                                        workload));
             }
 
             Infos.Sort((Info a, Info b) => {

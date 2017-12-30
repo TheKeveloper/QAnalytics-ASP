@@ -68,6 +68,16 @@
 					title : {
 						display : true,
 						text : c.Code + ": " + c.Name + " Ratings"
+					},
+					scales :{ 
+						yAxes : [{
+							display : true,
+							ticks : {
+								min : 1.0,
+								max : 5.5,
+								stepSize : 0.5
+							}
+						}]
 					}
 				}
 			}
