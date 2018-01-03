@@ -4,8 +4,10 @@
 <head runat="server">
 	<title>Departments</title>
 	<link rel = "stylesheet" type = "text/css" href = "/styles/general.css"/>
+	<script type = "text/javascript" src = "/scripts/libraries/Chart.js"></script>
+	<script type = "text/javascript" src = "/scripts/departments.js"></script>
 </head>
-<body>
+<body onload = "createChart();">
 	<a href = "Default.aspx" id = "pageTitle">Q-Analytics</a>
 	<div id = "header" align = "center">
 			<a href = "Default.aspx">Courses</a>
@@ -14,8 +16,13 @@
 	</div>
 	<form id="mainForm" runat="server">
             <div id = "nav">
-                <asp:DropDownList id = "listDepts" runat="server"/>
+                <asp:DropDownList id = "listDepts" runat="server" AutoPostBack = "true"/>
             </div>
+
+            <asp:HiddenField id = "valDept" runat="server"/>
 	</form>
+
+	<canvas id = "chartEnroll" width = "800" height = "400"></canvas>
+	<canvas id = "chartRatings" width = "800" height = "400"></canvas>
 </body>
 </html>

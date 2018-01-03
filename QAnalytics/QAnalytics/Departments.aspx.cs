@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.UI;
 using System.Collections.Generic;
 using QAnalytics.Models;
+using Newtonsoft.Json;
 
 namespace QAnalytics
 {
@@ -14,11 +15,31 @@ namespace QAnalytics
             base.OnLoad(e);
             DBManager manager = new DBManager();
             manager.Open();
-            var depts = Department.GetDepartments(manager);
-            manager.Close();
-            foreach(var dept in depts){
-                listDepts.Items.Add(dept);
+            var deptNames = Department.GetDepartments(manager);
+
+            foreach(var name in deptNames){
+                listDepts.Items.Add(name);
             }
+            int dept = -1;
+            if (int.TryParse(Request.Params["dept"], out dept))
+            {
+                if(!IsPostBack) listDepts.SelectedIndex = dept;
+            }
+            else
+            {
+                dept = 0;
+            }
+
+            Department department = new Department(deptNames[dept]);
+
+            department.Load(manager);
+            manager.Close();
+
+            valDept.Value = JsonConvert.SerializeObject(department);
+
+            listDepts.SelectedIndexChanged += (sender, args) => {
+                Response.Redirect("/Departments.aspx?dept=" + listDepts.SelectedIndex);
+            };
         }
     }
 }

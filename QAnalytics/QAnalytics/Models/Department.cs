@@ -47,7 +47,7 @@ namespace QAnalytics.Models
         public void Load(DBManager manager){
             var cmd = manager.CreateCommand();
             cmd.CommandText = "SELECT * FROM courses WHERE code LIKE @code ORDER BY year ASC, semester DESC";
-            cmd.Parameters.AddWithValue("@code", this.Code + " %");
+            cmd.Parameters.AddWithValue("@code", this.Code + "%");
 
             var reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -58,10 +58,12 @@ namespace QAnalytics.Models
                     Infos.Add(new Info(sem));
                 }
 
-                Infos[Infos.Count - 1].AggregateEnrollment += reader.GetInt32("enrollment");
-                Infos[Infos.Count - 1].AggregateRecommend += reader.GetFloat("recommend");
-                Infos[Infos.Count - 1].AggregateWorkload += reader.GetFloat("workload");   
+                int enrollment = reader.GetInt32("enrollment");
+                Infos[Infos.Count - 1].AggregateEnrollment += enrollment;
+                Infos[Infos.Count - 1].AggregateRecommend += enrollment * reader.GetFloat("recommend");
+                Infos[Infos.Count - 1].AggregateWorkload += enrollment * reader.GetFloat("workload");   
             }
+            reader.Close();
         }
 
         public static List<string> GetDepartments(DBManager manager){
@@ -81,6 +83,8 @@ namespace QAnalytics.Models
             foreach (var department in queryCodes){
                 depts.Add(department.Key);
             }
+
+            reader.Close();
             return depts;
         }
     }

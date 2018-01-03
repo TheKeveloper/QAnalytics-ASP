@@ -74,7 +74,7 @@ namespace QAnalytics.Models
                 }
                 this.Infos.Add(AdjustWorkload(new Info(reader)));
             }
-
+            reader.Close();
             Infos.Sort((Info a, Info b) => {
                 return CompareSemesters(a.Semester, b.Semester);
             });
@@ -130,7 +130,7 @@ namespace QAnalytics.Models
                 }
                 courses[courses.Count - 1].Infos.Add(AdjustWorkload(new Info(reader)));
             }
-
+            reader.Close();
             if(minSems > 1){
                 //Double check that this is how predicate works
                 courses.RemoveAll((c) => {
@@ -158,7 +158,7 @@ namespace QAnalytics.Models
             while(reader.Read()){
                 courses.Add(new Course(reader.GetString("code"), reader.GetString("name")));
             }
-
+            reader.Close();
             return courses;
         }
 
@@ -178,7 +178,7 @@ namespace QAnalytics.Models
                 c.Infos.Add(new Info(reader));
                 courses.Add(c);
             }
-
+            reader.Close();
             return courses;
         }
 
@@ -193,7 +193,7 @@ namespace QAnalytics.Models
             while(reader.Read()){
                 sems.Add(new Semester((Season) reader.GetInt32("semester"), reader.GetInt32("year")));
             }
-
+            reader.Close();
             sems.Sort((x, y) => CompareSemesters(x, y));
 
             return sems;

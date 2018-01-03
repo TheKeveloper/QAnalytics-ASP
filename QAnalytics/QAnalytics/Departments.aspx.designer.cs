@@ -16,5 +16,7 @@ namespace QAnalytics {
 		protected System.Web.UI.HtmlControls.HtmlForm mainForm;
 		
 		protected System.Web.UI.WebControls.DropDownList listDepts;
+		
+		protected System.Web.UI.WebControls.HiddenField valDept;
 	}
 }
