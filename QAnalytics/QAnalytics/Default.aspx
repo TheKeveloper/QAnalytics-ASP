@@ -3,19 +3,27 @@
 <html>
 <head runat="server">
     <title>Default</title>
-    <script>
-        function listPages_SelectionChanged(){
-            var listPages = document.getElementById("listPages");
-            //alert("Default.aspx?page=" + listPages.selectedIndex);
-            window.location = "Default.aspx?page=" + listPages.selectedIndex;
-        }
-    </script>
+    <script src = "/scripts/default.js"></script>
+    <link rel = "stylesheet" type = "text/css" href = "/styles/general.css"/>
+    <link rel = "stylesheet" type = "text/css" href = "/styles/default.css"/>
 </head>
 <body>
-    <h1 align="center">Q-Analytics</h1>
+    <a href = "Default.aspx" id = "pageTitle">Q-Analytics</a>
 	<form id="mainForm" runat="server">
-            <asp:DropDownList id = "listPages" onchange = "listPages_SelectionChanged();" runat="server"></asp:DropDownList>
+        <asp:HiddenField id = "valSearch" runat="server"></asp:HiddenField>
+        <div align = "center" id = "search">
+            <asp:TextBox id = "txtSearch" runat="server"></asp:TextBox>
+            <asp:Button id = "btnSearch" runat="server" Text = "Search"></asp:Button>
+            <br/>
+        </div>
 
+        <div id = "nav" align = "center" >
+            <asp:HyperLink id = "linkPrev" runat="server">Prev</asp:HyperLink>
+            <asp:DropDownList id = "listPages" onchange = "listPages_SelectionChanged();" runat="server"></asp:DropDownList>
+            <asp:HyperLink id = "linkNext" runat="server">Next</asp:HyperLink>
+        </div>
+
+            <br/>
             <asp:Table id = "tblCourses" runat="server"></asp:Table>
 
     </form>

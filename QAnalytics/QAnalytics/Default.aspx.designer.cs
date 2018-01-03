@@ -15,7 +15,17 @@ namespace QAnalytics {
 		
 		protected System.Web.UI.HtmlControls.HtmlForm mainForm;
 		
+		protected System.Web.UI.WebControls.HiddenField valSearch;
+		
+		protected System.Web.UI.WebControls.TextBox txtSearch;
+		
+		protected System.Web.UI.WebControls.Button btnSearch;
+		
+		protected System.Web.UI.WebControls.HyperLink linkPrev;
+		
 		protected System.Web.UI.WebControls.DropDownList listPages;
+		
+		protected System.Web.UI.WebControls.HyperLink linkNext;
 		
 		protected System.Web.UI.WebControls.Table tblCourses;
 	}

@@ -14,41 +14,77 @@ namespace QAnalytics
         {
             base.OnLoad(e);
             string strPage = Request.Params["page"];
+            string search = Request.Params["search"];
+            if (search == null) search = String.Empty;
+            valSearch.Value = search;
+            if(!IsPostBack){
+                txtSearch.Text = search.Replace("_", " ");
+            }
+
             int page = strPage == null ? 0 : int.Parse(strPage);
             DBManager manager = new DBManager();
             manager.Open();
-            List<Course> courses = Course.GetCoursesSimple(manager);
+            List<Course> courses = search.Equals(String.Empty) ? Course.GetCoursesSimple(manager) :
+                                         Course.SearchCourses(manager, search);
             manager.Close();
 
+            loadCourses(courses, page);
+
+            int pageMax = (int) Math.Ceiling((double)courses.Count / 25) - 1;
+
+            for (int i = 0; i <= pageMax; i++){
+                listPages.Items.Add(i.ToString());
+            }
+            listPages.SelectedIndex = page;
+
+            if (page == 0) linkPrev.Visible = false;
+            if (page == pageMax) linkNext.Visible = false;
+
+            linkPrev.NavigateUrl = "/Default.aspx?page=" + (page - 1) + "&search=" + search;
+            linkNext.NavigateUrl = "/Default.aspx?page=" + (page + 1) + "&search=" + search;
+
+            btnSearch.Click += (sender, args) =>
+            {
+                string s = txtSearch.Text.Replace(" ", "_");
+
+                Response.Redirect("/Default.aspx?page=0&search=" + s);
+            };
+        }
+
+        private void loadCourses(List<Course> courses, int page){
             int startIndex = page * 25;
             int endIndex = startIndex + 25;
             if (endIndex > courses.Count) endIndex = courses.Count;
 
-            for (int i = startIndex; i < endIndex; i++){
+            for (int i = startIndex; i < endIndex; i++)
+            {
                 var row = new TableRow();
                 var codeCell = new TableCell();
                 var codeLink = new HyperLink();
-                codeCell.Width = new Unit(150);
+
+                codeCell.Width = new Unit(250);
                 codeLink.Text = courses[i].Code;
                 codeLink.NavigateUrl = "Courses.aspx?code=" + courses[i].Code.Replace(' ', '_');
+                codeLink.CssClass = "courseLink";
+
                 codeCell.Controls.Add(codeLink);
+                codeCell.CssClass = "cellCode";
 
                 var nameCell = new TableCell();
                 var nameLink = new HyperLink();
+
                 nameLink.Text = courses[i].Name;
                 nameLink.NavigateUrl = codeLink.NavigateUrl;
+                nameLink.CssClass = "courseLink";
+
                 nameCell.Controls.Add(nameLink);
+                nameCell.CssClass = "cellName";
 
                 row.Cells.Add(codeCell);
                 row.Cells.Add(nameCell);
 
                 tblCourses.Rows.Add(row);
             }
-
-            for (int i = 0; i < Math.Ceiling((double) courses.Count / 25); i++){
-                listPages.Items.Add(i.ToString());
-            }
-            listPages.SelectedIndex = page;
         }
 
     }

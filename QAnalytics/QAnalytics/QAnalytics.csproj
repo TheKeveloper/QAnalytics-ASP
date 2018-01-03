@@ -91,6 +91,7 @@
     <Folder Include="Models\" />
     <Folder Include="scripts\" />
     <Folder Include="scripts\libraries\" />
+    <Folder Include="styles\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\MySqlTransaction.xml" />
