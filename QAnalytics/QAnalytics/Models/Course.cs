@@ -4,20 +4,28 @@ using MySql.Data.MySqlClient;
 
 namespace QAnalytics.Models
 {
-    public enum Semester{
-        Fall = 0, Spring = 1
+    public enum Season{
+        None = -1, Fall = 0, Spring = 1
+    }
+
+    public struct Semester{
+        public Season Season;
+        public int Year;
+
+        public Semester(Season season, int year){
+            this.Season = season;
+            this.Year = year;
+        }
     }
     public class Course
     {
         public struct Info{
             public Semester Semester;
-            public int Year;
             public int Enrollment;
             public float Recommend;
             public float Workload;
-            public Info(Semester semester, int year, int enrollment, float recommend, float workload){
-                this.Semester = semester;
-                this.Year = year;
+            public Info(Season season, int year, int enrollment, float recommend, float workload){
+                this.Semester = new Semester(season, year);
                 this.Enrollment = enrollment;
                 this.Recommend = recommend;
                 this.Workload = workload;
@@ -25,8 +33,7 @@ namespace QAnalytics.Models
 
             public Info(MySqlDataReader reader)
             {
-                this.Semester = (Semester)reader.GetInt32("semester");
-                this.Year = reader.GetInt32("year");
+                this.Semester = new Semester((Season)reader.GetInt32("semester"), reader.GetInt32("year"));
                 this.Enrollment = reader.GetInt32("enrollment");
                 this.Recommend = reader.GetFloat("recommend");
                 this.Workload = reader.GetFloat("workload");
@@ -63,15 +70,20 @@ namespace QAnalytics.Models
             }
 
             Infos.Sort((Info a, Info b) => {
-                if(a.Year != b.Year){
-                    return a.Year - b.Year;
-                }
-                return b.Semester - a.Semester;
+                return CompareSemesters(a.Semester, b.Semester);
             });
         }
 
+        public static int CompareSemesters(Semester a, Semester b){
+            if (a.Year != b.Year)
+            {
+                return a.Year - b.Year;
+            }
+            return b.Season - a.Season;
+        }
+
         public static Info AdjustWorkload(Info info){ 
-            if (info.Year > 2014 || (info.Year == 2014 && info.Semester == Semester.Fall))
+            if (info.Semester.Year > 2014 || (info.Semester.Year == 2014 && info.Semester.Season == Season.Fall))
             {
                 info.Workload = info.Workload * 3.0f / 10.0f;
                 if (info.Workload < 1) info.Workload = 1;
@@ -144,8 +156,46 @@ namespace QAnalytics.Models
             return courses;
         }
 
+        public static List<Course> LoadSemester(DBManager manager, Season season, int year){
+            List<Course> courses = new List<Course>();
+
+            var cmd = manager.CreateCommand();
+
+            cmd.CommandText = "SELECT * FROM courses WHERE semester = @sem AND year = @year";
+            cmd.Parameters.AddWithValue("@sem", (int) season);
+            cmd.Parameters.AddWithValue("@year", year);
+
+            var reader = cmd.ExecuteReader();
+
+            while(reader.Read()){
+                Course c = new Course(reader.GetString("code"), reader.GetString("name"));
+                c.Infos.Add(new Info(reader));
+                courses.Add(c);
+            }
+
+            return courses;
+        }
+
+        public static List<Semester> GetSemesters(DBManager manager){
+            List<Semester> sems = new List<Semester>();
+
+            var cmd = manager.CreateCommand();
+            cmd.CommandText = "SELECT semester, year FROM courses GROUP BY semester, year";
+
+            var reader = cmd.ExecuteReader();
+
+            while(reader.Read()){
+                sems.Add(new Semester((Season) reader.GetInt32("semester"), reader.GetInt32("year")));
+            }
+
+            sems.Sort((x, y) => CompareSemesters(x, y));
+
+            return sems;
+        }
+
         private static string parseCommon(string search){
-            return search.Replace("%CS%", "%COMPSCI%").Replace("%EC%", "%ECON%");
+            return search.Replace("%CS%", "%COMPSCI%").Replace("%EC%", "%ECON%").Replace("%SLS%", "%SCILIVSY%").Replace(
+                "%LS%", "%LIFESCI%");
         }
     }
 }

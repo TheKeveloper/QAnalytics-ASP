@@ -20,7 +20,7 @@ namespace QAnalytics
             c.Load(manager, code);
             manager.Close();
 
-            lblTitle.Text = c.Name + "</br>";
+            lblTitle.Text = c.Name + " (" + c.Code + ")" + "</br>";
             valCourse.Value = JsonConvert.SerializeObject(c);
             //Chart chart = new Chart();
 

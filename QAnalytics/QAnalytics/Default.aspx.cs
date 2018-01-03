@@ -37,11 +37,11 @@ namespace QAnalytics
             }
             listPages.SelectedIndex = page;
 
-            if (page == 0) linkPrev.Visible = false;
-            if (page == pageMax) linkNext.Visible = false;
+            int prevPage = page - 1 < 0 ? 0 : page - 1;
+            int nextPage = page + 1 > pageMax ? pageMax : page + 1;
 
-            linkPrev.NavigateUrl = "/Default.aspx?page=" + (page - 1) + "&search=" + search;
-            linkNext.NavigateUrl = "/Default.aspx?page=" + (page + 1) + "&search=" + search;
+            linkPrev.NavigateUrl = "/Default.aspx?page=" + (prevPage) + "&search=" + search;
+            linkNext.NavigateUrl = "/Default.aspx?page=" + (nextPage) + "&search=" + search;
 
             btnSearch.Click += (sender, args) =>
             {

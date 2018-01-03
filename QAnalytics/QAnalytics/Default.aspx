@@ -2,13 +2,19 @@
 <!DOCTYPE html>
 <html>
 <head runat="server">
-    <title>Default</title>
+    <title>Home</title>
     <script src = "/scripts/default.js"></script>
     <link rel = "stylesheet" type = "text/css" href = "/styles/general.css"/>
     <link rel = "stylesheet" type = "text/css" href = "/styles/default.css"/>
 </head>
 <body>
     <a href = "Default.aspx" id = "pageTitle">Q-Analytics</a>
+
+    <div id = "header" align = "center">
+        <a href = "Default.aspx">Courses</a>
+        <a href = "General.aspx">General</a>
+        <a href = "Departments.aspx">Department</a>
+    </div>
 	<form id="mainForm" runat="server">
         <asp:HiddenField id = "valSearch" runat="server"></asp:HiddenField>
         <div align = "center" id = "search">
@@ -27,5 +33,9 @@
             <asp:Table id = "tblCourses" runat="server"></asp:Table>
 
     </form>
+
+    <div id = "footer" align = "center">
+        Created by <a href = "mailto:kevinbi@college.harvard.edu">Kevin Bi</a>.
+    </div>
 </body>
 </html>

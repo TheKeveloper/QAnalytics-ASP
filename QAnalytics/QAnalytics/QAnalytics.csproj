@@ -67,6 +67,7 @@
     <Content Include="Courses.aspx" />
     <Content Include="packages.config" />
     <Content Include="scripts\libraries\Chart.js" />
+    <Content Include="Departments.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">
@@ -86,6 +87,13 @@
       <DependentUpon>Courses.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\DBManager.cs" />
+    <Compile Include="Models\Department.cs" />
+    <Compile Include="Departments.aspx.cs">
+      <DependentUpon>Departments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Departments.aspx.designer.cs">
+      <DependentUpon>Departments.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

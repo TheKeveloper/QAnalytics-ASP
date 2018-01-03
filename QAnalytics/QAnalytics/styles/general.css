@@ -33,3 +33,16 @@ a{
 body{
     background: #FAFAFF;
 }
+
+#footer{
+    text-decoration: none;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 11pt;
+    font-weight: bold;
+    margin: 20px;
+    color: #888888;
+}
+
+#footer a{
+    color: #666666;
+}
