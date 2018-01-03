@@ -1,71 +1,87 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QAnalytics.Models
 {
     public class Department
     {
+        public class Info{
+            public Semester Semester;
+            public int AggregateEnrollment;
+            public double AggregateRecommend;
+            public double AggregateWorkload;
+
+            public float AvgRecommend{ 
+                get{
+                    return (float)Math.Round(AggregateRecommend / (double) AggregateEnrollment, 2);
+                }
+            }
+
+            public float AvgWorkload{
+                get{
+                    return (float) Math.Round(AggregateWorkload / (double) AggregateEnrollment, 2);
+                }
+            }
+
+            public Info(Semester semester, int enroll, double recommend, double workload)
+            {
+                this.Semester = semester;
+                this.AggregateEnrollment = enroll;
+                this.AggregateRecommend = recommend;
+                this.AggregateWorkload = workload;
+            }
+
+            public Info(Semester semester) : this(semester, 0, 0, 0) {}
+        }
         public string Code;
-        public Semester Semester;
-        public int TotalEnrollment;
-        public double AggregateRecommend;
-        public double AggregateWorkload;
-        public List<Course> Courses;
+        public List<Info> Infos;
 
-        public float AverageRecommend {
-            get{
-                return (float)Math.Round(AggregateRecommend / (double)TotalEnrollment, 2);
-            }
-        }
-
-        public float AverageWorkload { 
-            get{
-                return (float)Math.Round(AggregateWorkload / (double)TotalEnrollment, 2);
-            }
-        }
-
-        public Department(string code, Season season, int year)
-        {
+        public Department(string code, List<Info> infos){
             this.Code = code;
-            this.Semester = new Semester(season, year);
-            TotalEnrollment = 0;
-            AggregateRecommend = 0;
-            AggregateWorkload = 0;
-            Courses = new List<Course>();
+            this.Infos = infos;
         }
 
-        public Department(string code) : this(code, Season.None, 0){}
-        public Department() : this(null) { }
+        public Department(string code) : this(code, new List<Info>()){}
 
-        public void LoadCourses(DBManager manager){
+        public void Load(DBManager manager){
             var cmd = manager.CreateCommand();
-
-            cmd.CommandText = "SELECT * FROM courses WHERE code LIKE @code AND semester = @sem AND year = @year;";
-            cmd.Parameters.AddWithValue("@code", this.Code + "%");
-            cmd.Parameters.AddWithValue("@sem", (int) this.Semester.Season);
-            cmd.Parameters.AddWithValue("@year", this.Semester.Year);
+            cmd.CommandText = "SELECT * FROM courses WHERE code LIKE @code ORDER BY year ASC, semester DESC";
+            cmd.Parameters.AddWithValue("@code", this.Code + " %");
 
             var reader = cmd.ExecuteReader();
-
             while (reader.Read())
             {
-                Course c = new Course(reader.GetString("code"), reader.GetString("name"));
-                c.Infos.Add(new Course.Info(reader));
-                Courses.Add(c);
+                Semester sem = new Semester((Season)reader.GetInt32("semester"), reader.GetInt32("year"));
+                if (Infos.Count == 0 || !Infos[Infos.Count - 1].Semester.Equals(sem))
+                {
+                    Infos.Add(new Info(sem));
+                }
 
-                TotalEnrollment += c.Infos[0].Enrollment;
-                if (c.Infos[0].Recommend > 0) AggregateRecommend += c.Infos[0].Recommend;
-                if (c.Infos[0].Workload > 0) AggregateWorkload += c.Infos[0].Workload;
+                Infos[Infos.Count - 1].AggregateEnrollment += reader.GetInt32("enrollment");
+                Infos[Infos.Count - 1].AggregateRecommend += reader.GetFloat("recommend");
+                Infos[Infos.Count - 1].AggregateWorkload += reader.GetFloat("workload");   
             }
         }
 
-        public List<Course> SortEnrollment(){
-            Courses.Sort((x, y) =>
-            {
-                return x.Infos[0].Enrollment - y.Infos[0].Enrollment;
-            });
+        public static List<string> GetDepartments(DBManager manager){
+            List<string> depts = new List<string>();
+            List<string> codes = new List<string>();
+            var cmd = manager.CreateCommand();
+            cmd.CommandText = "SELECT code FROM courses GROUP BY code";
+            var reader = cmd.ExecuteReader();
+            while (reader.Read()) {
+                codes.Add(reader.GetString("code"));
+            }
 
-            return Courses;
+            var queryCodes = from code in codes 
+                                  group code by code.Split(' ')[0] into department 
+                                  orderby department.Key 
+                                  select department;
+            foreach (var department in queryCodes){
+                depts.Add(department.Key);
+            }
+            return depts;
         }
     }
 }

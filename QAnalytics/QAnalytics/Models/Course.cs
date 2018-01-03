@@ -16,10 +16,16 @@ namespace QAnalytics.Models
             this.Season = season;
             this.Year = year;
         }
+
+        public override bool Equals(object obj)
+        {
+            Semester sem = (Semester)obj;
+            return sem.Year == this.Year && sem.Season == this.Season;
+        }
     }
     public class Course
     {
-        public struct Info{
+        public class Info{
             public Semester Semester;
             public int Enrollment;
             public float Recommend;

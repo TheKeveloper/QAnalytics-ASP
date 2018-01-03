@@ -7,8 +7,8 @@ function createChart(){
     var workloads = [];
 
     for(var i = 0; i < c.Infos.length; i++){
-        var strSem = c.Infos[i].Semester == 0 ? "Fall" : "Spring";
-        semesters.push(strSem + " " + c.Infos[i].Year);
+        var strSem = c.Infos[i].Semester.Season == 0 ? "Fall" : "Spring";
+        semesters.push(strSem + " " + c.Infos[i].Semester.Year);
         enrollments.push(c.Infos[i].Enrollment);
         recommends.push(c.Infos[i].Recommend);
         workloads.push(c.Infos[i].Workload);

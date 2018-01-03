@@ -12,6 +12,13 @@ namespace QAnalytics
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            DBManager manager = new DBManager();
+            manager.Open();
+            var depts = Department.GetDepartments(manager);
+            manager.Close();
+            foreach(var dept in depts){
+                listDepts.Items.Add(dept);
+            }
         }
     }
 }
