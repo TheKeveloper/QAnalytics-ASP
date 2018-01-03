@@ -59,9 +59,18 @@ namespace QAnalytics.Models
                 }
 
                 int enrollment = reader.GetInt32("enrollment");
+                float workload = reader.GetFloat("workload");
+
+                if(sem.Year > 2014 || (sem.Year == 2014 && sem.Season == Season.Fall)){
+                    workload = workload * 3.0f / 13.0f;
+                    if (workload < 1) workload = 1;
+                    else if (workload > 1) workload = 5;
+                    else workload = (float)Math.Round(workload, 2);
+                }
+
                 Infos[Infos.Count - 1].AggregateEnrollment += enrollment;
                 Infos[Infos.Count - 1].AggregateRecommend += enrollment * reader.GetFloat("recommend");
-                Infos[Infos.Count - 1].AggregateWorkload += enrollment * reader.GetFloat("workload");   
+                Infos[Infos.Count - 1].AggregateWorkload += enrollment * workload;   
             }
             reader.Close();
         }

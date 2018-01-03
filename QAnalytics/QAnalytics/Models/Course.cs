@@ -91,7 +91,7 @@ namespace QAnalytics.Models
         public static Info AdjustWorkload(Info info){ 
             if (info.Semester.Year > 2014 || (info.Semester.Year == 2014 && info.Semester.Season == Season.Fall))
             {
-                info.Workload = info.Workload * 3.0f / 10.0f;
+                info.Workload = info.Workload * 3.0f / 13.0f;
                 if (info.Workload < 1) info.Workload = 1;
                 else if (info.Workload > 5) info.Workload = 5;
                 info.Workload = (float)Math.Round((double)info.Workload, 2);
