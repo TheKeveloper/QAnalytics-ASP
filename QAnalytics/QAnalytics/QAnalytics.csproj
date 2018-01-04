@@ -101,6 +101,7 @@
     <Compile Include="General.aspx.designer.cs">
       <DependentUpon>General.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Models\LinReg.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

@@ -162,14 +162,14 @@ namespace QAnalytics.Models
             return courses;
         }
 
-        public static List<Course> LoadSemester(DBManager manager, Season season, int year){
+        public static List<Course> LoadSemester(DBManager manager, Semester semester){
             List<Course> courses = new List<Course>();
 
             var cmd = manager.CreateCommand();
 
             cmd.CommandText = "SELECT * FROM courses WHERE semester = @sem AND year = @year";
-            cmd.Parameters.AddWithValue("@sem", (int) season);
-            cmd.Parameters.AddWithValue("@year", year);
+            cmd.Parameters.AddWithValue("@sem", (int) semester.Season);
+            cmd.Parameters.AddWithValue("@year", semester.Year);
 
             var reader = cmd.ExecuteReader();
 

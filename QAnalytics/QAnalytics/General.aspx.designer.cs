@@ -16,5 +16,15 @@ namespace QAnalytics {
 		protected System.Web.UI.HtmlControls.HtmlForm mainForm;
 		
 		protected System.Web.UI.WebControls.DropDownList listSemesters;
+		
+		protected System.Web.UI.WebControls.HiddenField valEnrollments;
+		
+		protected System.Web.UI.WebControls.HiddenField valRecommends;
+		
+		protected System.Web.UI.WebControls.HiddenField valWorkloads;
+		
+		protected System.Web.UI.WebControls.HiddenField valEnrollRec;
+		
+		protected System.Web.UI.WebControls.HiddenField valWorkRec;
 	}
 }
