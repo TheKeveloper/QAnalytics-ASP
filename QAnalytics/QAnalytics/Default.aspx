@@ -4,7 +4,7 @@
 <head runat="server">
     <title>Home</title>
     <script src = "/scripts/default.js"></script>
-    <link rel = "stylesheet" type = "text/css" href = "/styles/general.css"/>
+    <link rel = "stylesheet" type = "text/css" href = "/styles/all.css"/>
     <link rel = "stylesheet" type = "text/css" href = "/styles/default.css"/>
 </head>
 <body>

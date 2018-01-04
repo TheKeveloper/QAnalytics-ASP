@@ -3,7 +3,7 @@
 <html>
 <head runat="server">
 	<title>Departments</title>
-	<link rel = "stylesheet" type = "text/css" href = "/styles/general.css"/>
+	<link rel = "stylesheet" type = "text/css" href = "/styles/all.css"/>
 	<script type = "text/javascript" src = "/scripts/libraries/Chart.js"></script>
 	<script type = "text/javascript" src = "/scripts/departments.js"></script>
 </head>
@@ -15,14 +15,15 @@
 			<a href = "Departments.aspx">Department</a>
 	</div>
 	<form id="mainForm" runat="server">
-            <div id = "nav">
+            <div id = "nav" align = "center">
                 <asp:DropDownList id = "listDepts" runat="server" AutoPostBack = "true"/>
             </div>
 
             <asp:HiddenField id = "valDept" runat="server"/>
 	</form>
-
-	<canvas id = "chartEnroll" width = "800" height = "400"></canvas>
-	<canvas id = "chartRatings" width = "800" height = "400"></canvas>
+    <div id = "charts" align = "center">
+		<canvas id = "chartEnroll" width = "800" height = "400"></canvas>
+		<canvas id = "chartRatings" width = "800" height = "400"></canvas>
+	</div>
 </body>
 </html>

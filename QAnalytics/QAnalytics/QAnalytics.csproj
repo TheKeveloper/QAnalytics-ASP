@@ -68,6 +68,7 @@
     <Content Include="packages.config" />
     <Content Include="scripts\libraries\Chart.js" />
     <Content Include="Departments.aspx" />
+    <Content Include="General.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">
@@ -93,6 +94,12 @@
     </Compile>
     <Compile Include="Departments.aspx.designer.cs">
       <DependentUpon>Departments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="General.aspx.cs">
+      <DependentUpon>General.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="General.aspx.designer.cs">
+      <DependentUpon>General.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

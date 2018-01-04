@@ -6,7 +6,7 @@
 	<script src = "/scripts/libraries/Chart.js"></script>
 	<script src = "/scripts/courses.js"></script>
 	<script src = "/scripts/default.js"></script>
-	<link rel = "stylesheet" type = "text/css" href = "/styles/general.css"/>
+	<link rel = "stylesheet" type = "text/css" href = "/styles/all.css"/>
 	<link rel = "stylesheet" type = "text/css" href = "/styles/course.css"/>
 </head>
 <body onload = "createChart()">

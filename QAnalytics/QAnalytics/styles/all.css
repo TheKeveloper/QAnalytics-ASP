@@ -46,3 +46,14 @@ body{
 #footer a{
     color: #666666;
 }
+
+#header{
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+#header a{
+    color: #777777;
+    margin: 10px;
+    font-size: 13pt;
+}
