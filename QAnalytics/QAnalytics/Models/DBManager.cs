@@ -6,6 +6,7 @@ namespace QAnalytics.Models
 {
     public class DBManager
     {
+        //Dummy connection string to use with local db. Must be changed for deployment
         public const string DB_CONNECTION_STRING = "Database=hcourser_db; Data Source=localhost; User id=root; Password=KevinRox";
         public const string TABLE_NAME = "courses";
 
